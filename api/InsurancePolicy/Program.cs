@@ -1,3 +1,8 @@
+using InsurancePolicy.Data;
+using InsurancePolicy.Extensions;
+using InsurancePolicy.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+
+builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddApiEndpoints();
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 var app = builder.Build();
 
@@ -13,9 +25,12 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
+
+app.MapIdentityApi<User>();
 
 var summaries = new[]
 {
