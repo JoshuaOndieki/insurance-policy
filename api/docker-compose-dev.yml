@@ -1,0 +1,33 @@
+services:
+  pgadmin-dev:
+    image: dpage/pgadmin4
+    container_name: insurancepolicy-dev-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8889:80"
+    depends_on:
+      - postgres-dev
+    networks:
+      - insurancepolicy-dev-network
+
+  postgres-dev:
+    image: postgres
+    container_name: insurancepolicy-dev-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-insured}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iP@2025}
+      POSTGRES_DB: ${POSTGRES_DB:-insurancedb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - insurancepolicy-pgdata-dev:/var/lib/postgresql/data
+    networks:
+      - insurancepolicy-dev-network
+
+volumes:
+  insurancepolicy-pgdata-dev:
+
+networks:
+  insurancepolicy-dev-network:
