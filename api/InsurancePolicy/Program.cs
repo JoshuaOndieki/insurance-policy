@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using InsurancePolicy.Data;
+using InsurancePolicy.Endpoints;
 using InsurancePolicy.Extensions;
 using InsurancePolicy.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +19,7 @@ builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<ApplicationDbC
     .AddApiEndpoints();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -51,6 +54,7 @@ app.MapGet("/weatherforecast", () =>
     })
     .WithName("GetWeatherForecast");
 
+app.MapGroup("/insurance-policies").MapInsurancePolicyEndpoints().RequireAuthorization();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
@@ -25,11 +26,6 @@
       <Content Include="..\docker-compose-dev.yml">
         <Link>docker-compose-dev.yml</Link>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Data\Repositories\" />
-      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>
