@@ -1,0 +1,16 @@
+include:
+  - api/compose.yaml # Include existing API services
+
+services:
+  app:
+    container_name: insurancepolicy-app
+    build:
+      context: ./client
+      args:
+        DEPLOY_LOCAL: ${DEPLOY_LOCAL}
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    networks:
+      - insurancepolicy-network

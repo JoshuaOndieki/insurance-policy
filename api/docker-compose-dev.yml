@@ -3,8 +3,8 @@ services:
     image: dpage/pgadmin4
     container_name: insurancepolicy-dev-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@joshuaondieki.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-a@dmIn3..}
     ports:
       - "8889:80"
     depends_on:

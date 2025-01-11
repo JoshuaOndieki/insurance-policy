@@ -28,14 +28,25 @@
     image: dpage/pgadmin4
     container_name: insurancepolicy-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@joshuaondieki.com
-      PGADMIN_DEFAULT_PASSWORD: a@dmIn3..
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@joshuaondieki.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-a@dmIn3..}
     ports:
       - "8888:80"
     depends_on:
       - postgres
     networks:
       - insurancepolicy-network
+  
+  # DockerfileEfMigrate service for running EF migrations
+  ef-migrate:
+    container_name: insurancepolicy-ef-migrate
+    build:
+      context: .
+      dockerfile: DockerfileEfMigrate
+    networks:
+      - insurancepolicy-network
+    depends_on:
+      - postgres
 
 volumes:
   insurancepolicy-pgdata:

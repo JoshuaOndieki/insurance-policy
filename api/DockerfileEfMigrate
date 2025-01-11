@@ -1,0 +1,16 @@
+# .NET SDK image for running EF commands
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS ef-container
+
+WORKDIR /app
+
+COPY ["InsurancePolicy/InsurancePolicy.csproj", "/app/InsurancePolicy/"]
+COPY ["InsurancePolicy/appsettings.json", "/app/InsurancePolicy/"]
+COPY ["InsurancePolicy/appsettings.Development.json", "/app/InsurancePolicy/"]
+COPY . .
+
+RUN dotnet restore "InsurancePolicy/InsurancePolicy.csproj"
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+WORKDIR "/app/InsurancePolicy"
