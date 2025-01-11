@@ -1,0 +1,13 @@
+<div class="fixed top-0 w-full flex flex-col bg-gray-300 bg-opacity-10">
+  @for (toast of toastService.messages(); track toast) {
+    @if (toast.type === 'success') {
+      <app-toast-success [toastMessage]="toast" (remove)="toastService.remove(toast)"/>
+    } @else if(toast.type === 'error') {
+      <app-toast-error [toastMessage]="toast" (remove)="toastService.remove(toast)"/>
+    } @else if(toast.type === 'warning') {
+      <app-toast-warning [toastMessage]="toast" (remove)="toastService.remove(toast)"/>
+    } @else if(toast.type === 'info') {
+      <app-toast-info [toastMessage]="toast" (remove)="toastService.remove(toast)"/>
+    }
+  }
+</div>

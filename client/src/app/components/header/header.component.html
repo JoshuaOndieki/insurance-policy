@@ -1,0 +1,21 @@
+<header class='shadow-md font-sans tracking-wide relative z-50'>
+  <section class='py-2 bg-[#007bff] text-white text-right px-4'>
+    <p class='text-sm'><strong class="mx-3">
+      Contact Us:</strong><a href="mailto:oj@joshuaondieki.com">oj&#64;joshuaondieki.com</a>
+<!--      <strong class="mx-3">Contact No:</strong>1800333665-->
+    </p>
+  </section>
+
+  <div class='flex flex-wrap items-center justify-between gap-4 p-4 bg-white min-h-[70px]'>
+    <a routerLink="/">
+      <div class="text-xl sm:text-2xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        InsurancePolicy
+      </div>
+    </a>
+
+    <div class="text-end">
+      <div>{{authUser()?.email}}</div>
+      <button (click)="signout()" class="text-red-300 hover:underline-offset-4 hover:underline">sign out</button>
+    </div>
+  </div>
+</header>
