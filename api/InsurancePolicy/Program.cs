@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using InsurancePolicy.Data;
 using InsurancePolicy.Endpoints;
 using InsurancePolicy.Extensions;
@@ -12,6 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 
@@ -30,6 +40,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
     app.ApplyMigrations();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
