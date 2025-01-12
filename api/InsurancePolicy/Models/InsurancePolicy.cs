@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InsurancePolicy.Models;
 
-[Index(nameof(PolicyNumber), nameof(CreatedBy), IsUnique = true)]
 public class InsurancePolicy: Auditable
 {
     [Required]
@@ -30,9 +29,9 @@ public class InsurancePolicy: Auditable
     public DateTime EndDate { get; set; }
         
     [Required]
-    [Min(0)]
-    public decimal PremiumAmount { get; set; }
+    [Min(1)]
+    public decimal PremiumAmount { get; set; } // TODO: support multiple currencies, currently implies KES
         
     [StringLength(500)]
-    public string CoverageDetails { get; set; }
+    public string? CoverageDetails { get; set; }
 }

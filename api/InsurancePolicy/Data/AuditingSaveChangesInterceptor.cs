@@ -7,19 +7,32 @@ namespace InsurancePolicy.Data;
 
 public class AuditingSaveChangesInterceptor : SaveChangesInterceptor
 {
-    private readonly ClaimsPrincipal? _claimsPrincipal;
-    public AuditingSaveChangesInterceptor(ClaimsPrincipal? claimsPrincipal)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public AuditingSaveChangesInterceptor(IHttpContextAccessor httpContextAccessor)
     {
-        _claimsPrincipal = claimsPrincipal;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
+    {
+        ApplyAuditing(eventData);
+        return base.SavingChanges(eventData, result);
+    }
+
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
+        CancellationToken cancellationToken = default)
+    {
+        ApplyAuditing(eventData);
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
     
-    public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
+    private void ApplyAuditing(DbContextEventData eventData)
     {
         var dbContext = eventData.Context;
         var entries = dbContext.ChangeTracker.Entries<Auditable>();
         foreach (var entry in entries)
         {
-            var userId = _claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = _httpContextAccessor.HttpContext?.User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             switch (entry.State)
             {
                 case EntityState.Added:
@@ -32,6 +45,5 @@ public class AuditingSaveChangesInterceptor : SaveChangesInterceptor
                     break;
             }
         }
-        return base.SavingChanges(eventData, result);
     }
 }

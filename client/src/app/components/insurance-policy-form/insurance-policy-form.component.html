@@ -1,0 +1,118 @@
+<div
+  class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+  <div class="w-full max-w-screen-lg bg-white shadow-lg p-4 relative">
+    <div class="flex items-center">
+      <h3 class="text-blue-600 text-xl font-bold flex-1">{{insurancePolicy() ? 'Edit ' + insurancePolicy()?.policyNumber : 'New'}} Insurance Policy</h3>
+      <svg (click)="onClose.emit()"
+        xmlns="http://www.w3.org/2000/svg" class="w-3 ml-2 cursor-pointer shrink-0 fill-gray-400 hover:fill-red-500"
+           viewBox="0 0 320.591 320.591">
+        <path
+          d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+          data-original="#000000"></path>
+        <path
+          d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+          data-original="#000000"></path>
+      </svg>
+    </div>
+
+    <form class="space-y-4 mt-8" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="flex gap-4 flex-wrap">
+        <div class="px-8 min-w-fit py-4 border-2 border-gray-100 rounded-md grow">
+          <div class="mb-4 text-lg">Policy Details</div>
+          <div class="my-4">
+            <label class="text-gray-800 text-sm mb-2 block">Policy Number</label>
+            <input type="text" placeholder="Enter policy number" formControlName="policyNumber"
+                   class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+            <div class="sm:col-span-1">
+              <label for="startDate" class="block text-sm text-gray-800 mb-2">Start Date</label>
+              <input type="datetime-local" id="startDate" name="startDate" formControlName="startDate"
+                     class="w-full px-3 py-2 border focus:outline-blue-600 rounded">
+            </div>
+
+            <div class="sm:col-span-1">
+              <label for="endDate" class="block text-sm text-gray-800 mb-2">End Date</label>
+              <input type="datetime-local" id="endDate" name="endDate" formControlName="endDate"
+                     class="w-full px-3 py-2 border focus:outline-blue-600 rounded">
+            </div>
+          </div>
+
+          <div class="my-4">
+            <label class="text-gray-800 text-sm mb-2 block">Premium Amount <span class="text-gray-500 text-xs">(KES)</span></label>
+            <input type="number" placeholder="Enter premium amount in KES" formControlName="premiumAmount"
+                   class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
+          </div>
+        </div>
+
+        <div class="px-8 min-w-fit py-4 border-2 border-gray-100 rounded-md grow">
+          <div class="mb-4 text-lg">Policy Holder Information</div>
+          <div class="my-4">
+            <label class="text-gray-800 text-sm mb-2 block">Name</label>
+            <input type="text" placeholder="John Doe" formControlName="holderName"
+                   class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
+          </div>
+
+          <div class="my-4">
+            <label class="text-gray-800 text-sm mb-2 block">Email</label>
+            <input type="email" placeholder="email@example.com" formControlName="holderEmail"
+                   class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
+          </div>
+
+          <div class="my-4">
+            <label class="text-gray-800 text-sm mb-2 block">Phone</label>
+            <input type="text" placeholder="+254712345678" formControlName="holderPhone"
+                   class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
+          </div>
+
+        </div>
+      </div>
+
+      <div class="px-8 py-4 border-2 border-gray-100 rounded-md">
+        <div class="mb-4 text-lg">Policy Coverage Details</div>
+        <div>
+          <label class="text-gray-800 text-sm mb-2 block">Coverage Details</label>
+          <textarea placeholder='More details about the coverage...' formControlName="coverageDetails"
+                    class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-4 !mt-8">
+        @if (insurancePolicy()) {
+          <button (click)="delete()" type="button"
+                  [disabled]="deleting() || submitting()"
+                  [ngClass]="deleting() || submitting() ? 'bg-red-300 cursor-not-allowed text-white' : 'border-red-600 hover:bg-red-700 text-red-500 hover:text-white cursor-pointer'"
+                  class="flex justify-between py-3 px-6 text-sm border tracking-wide focus:outline-none">
+            <span>
+              @if (deleting()) {
+                <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                  </svg>
+              }
+            </span>
+            <span>Delete</span>
+          </button>
+        }
+        <button type="button" (click)="onClose.emit()"
+                [disabled]="submitting() || deleting()"
+                class="px-6 py-3 text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300">Cancel</button>
+        <button type="submit"
+                [disabled]="form.invalid || submitting() || deleting()"
+                [ngClass]="form.invalid || submitting() || deleting() ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'"
+                class="flex justify-between py-3 px-6 text-sm text-white tracking-wide focus:outline-none">
+            <span>
+              @if (submitting()) {
+                <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                  </svg>
+              }
+            </span>
+          <span>Submit {{insurancePolicy() ? 'Edit' : 'New'}} Policy</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

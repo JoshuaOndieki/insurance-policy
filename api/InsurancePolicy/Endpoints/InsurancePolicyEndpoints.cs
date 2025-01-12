@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using InsurancePolicy.Data;
+using InsurancePolicy.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace InsurancePolicy.Endpoints;
@@ -46,7 +47,7 @@ public static class InsurancePolicyEndpoints
                 return Results.Unauthorized();
             
             var policyWithNumber = dbContext.InsurancePolicies
-                .FirstOrDefault(ip => ip.Id.Equals(policyRequest.PolicyNumber) && ip.CreatedById.Equals(userId));
+                .FirstOrDefault(ip => ip.PolicyNumber.Equals(policyRequest.PolicyNumber) && ip.CreatedById.Equals(userId));
 
             if (policyWithNumber != null) return Results.Conflict($"Policy number {policyRequest.PolicyNumber} already exists.");
             
@@ -56,8 +57,8 @@ public static class InsurancePolicyEndpoints
                 HolderName = policyRequest.HolderName,
                 HolderEmail = policyRequest.HolderEmail,
                 HolderPhone = policyRequest.HolderPhone,
-                StartDate = policyRequest.StartDate.ToUniversalTime(),
-                EndDate = policyRequest.EndDate.ToUniversalTime(),
+                StartDate = policyRequest.StartDate.Value.UtcDateTime,
+                EndDate = policyRequest.EndDate.Value.UtcDateTime,
                 PremiumAmount = policyRequest.PremiumAmount,
                 CoverageDetails = policyRequest.CoverageDetails,
             };
@@ -66,7 +67,7 @@ public static class InsurancePolicyEndpoints
             await dbContext.SaveChangesAsync();
 
             return Results.Created($"/{policy.Id}", policy);
-        });
+        }).Validate<InsurancePolicyRequest>();
 
         builder.MapPut("/{id:guid}", async (Guid id, InsurancePolicyRequest updatePolicyRequest, ClaimsPrincipal claimsPrincipal, ApplicationDbContext dbContext) =>
         {
@@ -91,15 +92,15 @@ public static class InsurancePolicyEndpoints
             policy.HolderName = updatePolicyRequest.HolderName;
             policy.HolderEmail = updatePolicyRequest.HolderEmail;
             policy.HolderPhone = updatePolicyRequest.HolderPhone;
-            policy.StartDate = updatePolicyRequest.StartDate.ToUniversalTime();
-            policy.EndDate = updatePolicyRequest.EndDate.ToUniversalTime();
+            policy.StartDate = updatePolicyRequest.StartDate.Value.UtcDateTime;
+            policy.EndDate = updatePolicyRequest.EndDate.Value.UtcDateTime;
             policy.PremiumAmount = updatePolicyRequest.PremiumAmount;
             policy.CoverageDetails = updatePolicyRequest.CoverageDetails;
                 
             await dbContext.SaveChangesAsync();
 
             return Results.Ok(policy);
-        });
+        }).Validate<InsurancePolicyRequest>();
 
         builder.MapDelete("/{id:guid}", async (Guid id, ClaimsPrincipal claimsPrincipal, ApplicationDbContext dbContext) =>
         {

@@ -21,6 +21,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error) => {
       if (error.status === 401) {
         localStorage.removeItem('InsuredAccess');
+        localStorage.removeItem('InsuredUser');
 
         if (req.url.includes('/login')) {
           return throwError(() => error);

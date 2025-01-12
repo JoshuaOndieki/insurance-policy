@@ -36,3 +36,24 @@ export interface APIErrorResponse {
 export interface APIErrors {
   [key:string]: string[]
 }
+
+export interface APIBadRequestError {
+  memberNames: string[]
+  errorMessage: string
+}
+
+export interface InsurancePolicy {
+  policyNumber: string
+  holderName: string
+  holderEmail: string | null
+  holderPhone: string | null
+  startDate: string
+  endDate: string
+  premiumAmount: number
+  coverageDetails: string | null
+  id: string
+  createdById: string
+  createdAtUtc: string
+  lastModifiedById: string | null
+  lastModifiedAtUtc: string | null
+}
