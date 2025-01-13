@@ -35,8 +35,19 @@ The production setup can be fully Dockerized or partially Dockerized with the An
 #### Fully Dockerized Setup:
 1. **Run the Application:**
    ```bash
-   docker compose up -d
+   ENABLE_SSL=true docker compose up -d
    ```
+
+> [!NOTE]  
+> Only include the ENABLE_SSL ARG if you have the certificat.pfx at `/home/user/certs/` And password `certssl`
+> You can also modify those props in the docker compose file.
+> If you'd like to generate the pfx:
+> ```bash
+> dotnet dev-certs https --clean
+>   ```
+>  ```bash
+>  dotnet dev-certs https -ep ~/certs/certificate.pfx -p certssl --trust
+>   ```
 
 2. **Access the Application:**
    - **App:** Your host mapped to [http://localhost:8080](http://localhost:8080)

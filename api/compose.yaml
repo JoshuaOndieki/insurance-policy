@@ -7,7 +7,13 @@
       dockerfile: InsurancePolicy/Dockerfile
     ports:
       - "8008:8080"
-      - "8443:8080"
+      - "8443:8443"
+    environment:
+      ASPNETCORE_HTTPS_PORTS: ${ENABLE_SSL:+8443}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${ENABLE_SSL:+/https/certificate.pfx}
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${ENABLE_SSL:+certssl}
+    volumes:
+      - ${HOME:-${USERPROFILE}}/certs/:/https/
     depends_on:
       - postgres
     networks:

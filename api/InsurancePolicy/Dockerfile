@@ -10,9 +10,6 @@ WORKDIR /src
 COPY ["InsurancePolicy/InsurancePolicy.csproj", "InsurancePolicy/"]
 RUN dotnet restore "InsurancePolicy/InsurancePolicy.csproj"
 COPY . .
-# Install EF tools
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
 
 WORKDIR "/src/InsurancePolicy"
 RUN dotnet build "InsurancePolicy.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -24,4 +21,5 @@ RUN dotnet publish "InsurancePolicy.csproj" -c $BUILD_CONFIGURATION -o /app/publ
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "InsurancePolicy.dll"]
