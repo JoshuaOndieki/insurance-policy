@@ -1,7 +1,8 @@
 # InsurancePolicy
 Simple Insurance Policy Management System
 
-![img.png](./assets/img.png)
+![login.png](./assets/login.png)
+![dashboard.png](./assets/dashboard.png)
 
 # Getting Started
 
