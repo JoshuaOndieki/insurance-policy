@@ -10,6 +10,7 @@ services:
         DEPLOY_LOCAL: ${DEPLOY_LOCAL}
     ports:
       - "8080:80"
+      - "2083:80"
     depends_on:
       - api
     networks:
