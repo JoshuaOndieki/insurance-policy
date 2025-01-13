@@ -12,7 +12,7 @@ public static class InsurancePolicyEndpoints
     {
         builder.MapGet("/", async (ClaimsPrincipal claimsPrincipal, ApplicationDbContext dbContext,
             [FromQuery] int page = 1, [FromQuery] int pageSize = 10,
-            [FromQuery] string? sortField = "AddedDate", [FromQuery] string? sortOrder = "asc",
+            [FromQuery] string? sortField = "AddedDate", [FromQuery] string? sortOrder = "desc",
             [FromQuery] string? search = null) =>
         {
             var userId = claimsPrincipal?.Claims?
@@ -48,7 +48,7 @@ public static class InsurancePolicyEndpoints
                     "addeddate" => sortOrder.ToLower() == "desc"
                         ? query.OrderByDescending(ip => ip.CreatedAtUtc)
                         : query.OrderBy(ip => ip.CreatedAtUtc),
-                    _ => query.OrderBy(ip => ip.CreatedAtUtc) // Default sorting by CreatedAtUtc
+                    _ => query.OrderByDescending(ip => ip.CreatedAtUtc) // Default sorting by CreatedAtUtc DESC
                 };
             }
 

@@ -1,6 +1,8 @@
 # InsurancePolicy
 Simple Insurance Policy Management System
 
+![img.png](./assets/img.png)
+
 # Getting Started
 
 This guide explains how to set up and run the application in three different environments: **Production**, **Local**, and **Development**.

@@ -50,7 +50,7 @@ export class DashboardComponent implements AfterViewChecked {
   page = model(1)
   pageSize = model(10)
   sortField = model<"AddedDate" | "StartDate" | "PremiumAmount">('AddedDate')
-  sortOrder = model<"asc" | "desc">("asc")
+  sortOrder = model<"asc" | "desc">("desc")
   search = model("")
   metadata = signal<HttpParams | null>(null)
 
