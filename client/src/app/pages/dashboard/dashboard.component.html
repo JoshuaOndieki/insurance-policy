@@ -79,13 +79,13 @@
             <th class="p-4 text-left text-sm font-semibold text-black">
               Premium Value
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="py-4 px-2 text-left text-sm font-semibold text-black">
               Policy Start
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="py-4 px-2 text-left text-sm font-semibold text-black">
               Policy End
             </th>
-            <th class="p-4 text-sm font-semibold text-black">
+            <th class="px-2 py-4 text-sm font-semibold text-black">
               Status
               <span class="relative group">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-[12px] fill-gray-300 inline mr-3" viewBox="0 0 23.625 23.625">
@@ -132,15 +132,15 @@
                   {{insurancePolicy.premiumAmount | currency: 'KES '}}
 <!--                  <p class="text-xs text-gray-500 mt-1">In Process</p>-->
                 </td>
-                <td class="p-4 text-sm text-black">
+                <td class="py-4 px-2 text-sm text-black">
                   {{insurancePolicy.startDate | date: 'medium'}}
 <!--                  <p class="text-xs text-gray-500 mt-1">Paid</p>-->
                 </td>
-                <td class="p-4 text-sm text-black">
+                <td class="py-4 px-2 text-sm text-black">
                   {{insurancePolicy.endDate | date: 'medium'}}
 <!--                  <p class="text-xs text-gray-500 mt-1">Web UI/UX Design</p>-->
                 </td>
-                <td class="p-4">
+                <td class="px-2 py-4">
                   @if (insurancePolicyStatus(insurancePolicy) === 'active') {
                     <span type="button" class="flex items-center text-green-600 text-xs bg-green-50 px-3 py-1 tracking-wide rounded-full">
                       Active
@@ -154,10 +154,6 @@
                       Closed
                     </span>
                   }
-<!--                  <div class="bg-gray-300 rounded-full w-full h-2">-->
-<!--                    <div class="w-2/3 h-full rounded-full bg-green-500"></div>-->
-<!--                  </div>-->
-<!--                  <p class="text-xs text-gray-500 mt-1">Total : 800</p>-->
                 </td>
                 <td class="p-4">
                   <p class="w-64 text-wrap text-sm">{{insurancePolicy.coverageDetails}}</p>
