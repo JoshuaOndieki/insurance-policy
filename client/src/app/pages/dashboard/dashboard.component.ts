@@ -1,8 +1,8 @@
 import {
   AfterViewChecked,
   ChangeDetectorRef,
-  Component, effect,
-  ElementRef,
+  Component, computed, effect,
+  ElementRef, model,
   ResourceStatus,
   signal,
   ViewChild
@@ -10,14 +10,16 @@ import {
 import {HeaderComponent} from '../../components/header/header.component';
 import {rxResource} from '@angular/core/rxjs-interop';
 import {InsurancePolicyService} from '../../services/insurance-policy.service';
-import {CurrencyPipe, DatePipe, NgIf, NgStyle} from '@angular/common';
+import {CurrencyPipe, DatePipe, NgClass, NgIf, NgOptimizedImage, NgStyle} from '@angular/common';
 import {ErrorComponent} from '../../components/error/error.component';
 import {dateFormatter} from '../../../utils';
 import {InsurancePolicy} from '../../../types';
 import {InsurancePolicyFormComponent} from '../../components/insurance-policy-form/insurance-policy-form.component';
-import {finalize} from 'rxjs';
+import {finalize, of} from 'rxjs';
 import {ToastService} from '../../services/toast.service';
 import {ConfirmDeleteDialogComponent} from '../../components/confirm-delete-dialog/confirm-delete-dialog.component';
+import {FormsModule} from '@angular/forms';
+import {HttpParams} from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +31,10 @@ import {ConfirmDeleteDialogComponent} from '../../components/confirm-delete-dial
     CurrencyPipe,
     DatePipe,
     InsurancePolicyFormComponent,
-    ConfirmDeleteDialogComponent
+    ConfirmDeleteDialogComponent,
+    NgOptimizedImage,
+    FormsModule,
+    NgClass
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -42,15 +47,40 @@ export class DashboardComponent implements AfterViewChecked {
   showConfirmDeleteDialog = signal(false)
   insurancePolicyToDelete = signal<InsurancePolicy | null>(null)
 
+  page = model(1)
+  pageSize = model(10)
+  sortField = model<"AddedDate" | "StartDate" | "PremiumAmount">('AddedDate')
+  sortOrder = model<"asc" | "desc">("asc")
+  search = model("")
+  metadata = signal<HttpParams | null>(null)
+
+  firstLoad = signal<number | undefined>(undefined)
   insurancePoliciesResource = rxResource({
-    loader: () => this.insurancePolicyService.getAll()
+    request: ()=> this.metadata(),
+    loader: ({request}) => {
+      return request ? this.insurancePolicyService.getAll(request) : of(null)
+    }
   })
+
+  insurancePolicies = computed(()=> this.insurancePoliciesResource.value()?.data)
+  insurancePoliciesMetadata = computed(()=> this.insurancePoliciesResource.value()?.metadata)
 
   constructor(private insurancePolicyService: InsurancePolicyService, private cdr: ChangeDetectorRef,
               private toastService: ToastService) {
     effect(() => {
-      console.log(this.insurancePoliciesResource.value())
+      const params = new HttpParams()
+        .set('page', this.page())
+        .set('pageSize', this.pageSize())
+        .set('sortField', this.sortField())
+        .set('sortOrder', this.sortOrder())
+        .set('search', this.search())
+      this.metadata.set(params)
     });
+
+    effect(() => {
+      if (this.firstLoad() === undefined)
+        this.firstLoad.set(this.insurancePoliciesMetadata()?.totalCount)
+    })
   }
 
   insurancePolicyStatus(policy: InsurancePolicy) {
@@ -109,4 +139,5 @@ export class DashboardComponent implements AfterViewChecked {
 
   protected readonly ResourceStatus = ResourceStatus;
   protected readonly dateFormatter = dateFormatter;
+  protected readonly Math = Math;
 }

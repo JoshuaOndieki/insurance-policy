@@ -57,3 +57,18 @@ export interface InsurancePolicy {
   lastModifiedById: string | null
   lastModifiedAtUtc: string | null
 }
+
+export interface InsurancePoliciesResponse {
+  metadata: Metadata
+  data: InsurancePolicy[]
+}
+
+export interface Metadata {
+  totalCount: number
+  page: number
+  pageSize: number
+  totalPages: number
+  sortField: string
+  sortOrder: string
+  search: any
+}

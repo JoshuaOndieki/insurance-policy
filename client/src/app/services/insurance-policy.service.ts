@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {AbstractHttpService} from './http.abstract';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {InsurancePolicy} from '../../types';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {InsurancePoliciesResponse, InsurancePolicy} from '../../types';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -13,8 +13,8 @@ export class InsurancePolicyService extends AbstractHttpService{
 
   constructor(httpClient: HttpClient) {super(httpClient);}
 
-  getAll() {
-    return this.get<InsurancePolicy[]>(this.baseInsurancePoliciesUrl)
+  getAll(params: HttpParams) {
+    return this.get<InsurancePoliciesResponse>(this.baseInsurancePoliciesUrl, params);
   }
 
   getOne(insurancePolicyId: string) {
