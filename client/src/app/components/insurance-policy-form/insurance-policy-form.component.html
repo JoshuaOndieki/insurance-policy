@@ -20,27 +20,27 @@
         <div class="px-8 min-w-fit py-4 border-2 border-gray-100 rounded-md grow">
           <div class="mb-4 text-lg">Policy Details</div>
           <div class="my-4">
-            <label class="text-gray-800 text-sm mb-2 block">Policy Number</label>
+            <label class="text-gray-800 text-sm mb-2 block">Policy Number *</label>
             <input type="text" placeholder="Enter policy number" formControlName="policyNumber"
                    class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
           </div>
 
           <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
             <div class="sm:col-span-1">
-              <label for="startDate" class="block text-sm text-gray-800 mb-2">Start Date</label>
+              <label for="startDate" class="block text-sm text-gray-800 mb-2">Start Date *</label>
               <input type="datetime-local" id="startDate" name="startDate" formControlName="startDate"
                      class="w-full px-3 py-2 border focus:outline-blue-600 rounded">
             </div>
 
             <div class="sm:col-span-1">
-              <label for="endDate" class="block text-sm text-gray-800 mb-2">End Date</label>
+              <label for="endDate" class="block text-sm text-gray-800 mb-2">End Date *</label>
               <input type="datetime-local" id="endDate" name="endDate" formControlName="endDate"
                      class="w-full px-3 py-2 border focus:outline-blue-600 rounded">
             </div>
           </div>
 
           <div class="my-4">
-            <label class="text-gray-800 text-sm mb-2 block">Premium Amount <span class="text-gray-500 text-xs">(KES)</span></label>
+            <label class="text-gray-800 text-sm mb-2 block">Premium Amount * <span class="text-gray-500 text-xs">(KES)</span></label>
             <input type="number" placeholder="Enter premium amount in KES" formControlName="premiumAmount"
                    class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
           </div>
@@ -49,7 +49,7 @@
         <div class="px-8 min-w-fit py-4 border-2 border-gray-100 rounded-md grow">
           <div class="mb-4 text-lg">Policy Holder Information</div>
           <div class="my-4">
-            <label class="text-gray-800 text-sm mb-2 block">Name</label>
+            <label class="text-gray-800 text-sm mb-2 block">Name *</label>
             <input type="text" placeholder="John Doe" formControlName="holderName"
                    class="px-4 py-3 w-full text-gray-800 text-sm border focus:outline-blue-600 rounded" />
           </div>
