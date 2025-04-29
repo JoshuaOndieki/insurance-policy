@@ -26,7 +26,7 @@
 } @else {
   @if (insurancePolicies()?.length || insurancePoliciesMetadata()?.totalCount || insurancePoliciesResource.status() === ResourceStatus.Loading || insurancePoliciesResource.status() === ResourceStatus.Reloading) {
     <div class="w-full flex justify-end p-4 mt-2">
-      <button type="button" (click)="this.showInsurancePolicyForm.set(true)"
+      <button type="button" (click)="insurancePolicyOnForm.set(null); this.showInsurancePolicyForm.set(true)"
               class="text-white h-10 px-4 inline-flex items-center justify-center border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600">
         <svg xmlns="http://www.w3.org/2000/svg" width="14px" fill="#fff" class="inline me-1" viewBox="0 0 512 512">
           <path
